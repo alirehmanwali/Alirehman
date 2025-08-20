@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Projects</title>
+  <style>
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #222;
+    }
+
+    /* Grid Layout */
+    .projects-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* Project Card */
+    .project-card {
+      background-color: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .project-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .project-content {
+      padding: 15px;
+    }
+
+    .project-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #222;
+      margin-bottom: 8px;
+    }
+
+    .project-description {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .view-btn {
+      display: inline-block;
+      padding: 8px 15px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .view-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Projects</h1>
+
+  <div class="projects-container" id="projectsContainer">
+    <!-- Projects will load dynamically -->
+  </div>
+
+  <script>
+    // Array of projects
+    const projects = [
+      {
+        title: "Portfolio Website",
+        description: "A personal portfolio showcasing my skills and projects.",
+        image: "https://source.unsplash.com/400x250/?website,design",
+        link: "https://alirehmanwali.github.io/Alirehman/projects/index.html"
+      },
+      {
+        title: "E-commerce Store",
+        description: "A responsive online store built using HTML, CSS & JS.",
+        image: "https://source.unsplash.com/400x250/?ecommerce,shopping",
+        link: "https://your-ecommerce-link.com"
+      },
+      {
+        title: "Blog Platform",
+        description: "A blogging platform with categories and search features.",
+        image: "https://source.unsplash.com/400x250/?blog,coding",
+        link: "https://your-blog-link.com"
+      },
+      {
+        title: "Weather App",
+        description: "A weather forecast app using OpenWeather API.",
+        image: "https://source.unsplash.com/400x250/?weather,app",
+        link: "https://your-weather-app-link.com"
+      }
+    ];
+
+    // Load projects dynamically
+    const container = document.getElementById("projectsContainer");
+
+    projects.forEach(project => {
+      const card = document.createElement("div");
+      card.classList.add("project-card");
+      card.innerHTML = `
+        <img src="${project.image}" alt="${project.title}" class="project-image">
+        <div class="project-content">
+          <h3 class="project-title">${project.title}</h3>
+          <p class="project-description">${project.description}</p>
+          <a href="${project.link}" target="_blank" class="view-btn">View Project</a>
+        </div>
+      `;
+      container.appendChild(card);
+
+      // Make the whole card clickable
+      card.addEventListener("click", () => {
+        window.open(project.link, "_blank");
+      });
+    });
+  </script>
+</body>
+</html>
