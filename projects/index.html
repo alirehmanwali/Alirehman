@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost & Found Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom CSS for features Tailwind doesn't cover easily */
+        .image-preview {
+            display: none;
+            max-height: 200px;
+            object-fit: contain;
+        }
+        
+        .match-highlight {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        
+        .message-bubble {
+            position: relative;
+            border-radius: 1rem;
+        }
+        
+        .message-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+        }
+        
+        .received:after {
+            left: -10px;
+            border-right-color: #e5e7eb;
+            border-left: 0;
+        }
+        
+        .sent:after {
+            right: -10px;
+            border-left-color: #3b82f6;
+            border-right: 0;
+        }
+        
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-search fa-lg"></i>
+                <h1 class="text-xl font-bold">CampusLost<span class="text-yellow-300">&</span>Found</h1>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#" class="hover:text-yellow-300 transition">Home</a>
+                <a href="#lost" class="hover:text-yellow-300 transition">Report Lost</a>
+                <a href="#found" class="hover:text-yellow-300 transition">Report Found</a>
+                <a href="#browse" class="hover:text-yellow-300 transition">Browse Items</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="loginBtn" class="bg-white text-blue-600 px-4 py-1 rounded-full font-medium hover:bg-blue-50 transition">Login</button>
+                <button id="registerBtn" class="bg-yellow-400 text-blue-800 px-4 py-1 rounded-full font-medium hover:bg-yellow-300 transition">Register</button>
+                <button id="userMenuBtn" class="hidden items-center space-x-1">
+                    <span class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center">JS</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Lost Something on Campus?</h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Our community helps reunite lost items with their owners. Report lost or found items and get matched automatically!</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#lost" class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition flex items-center justify-center gap-2">
+                    <i class="fas fa-question-circle"></i> Report Lost Item
+                </a>
+                <a href="#found" class="bg-yellow-400 text-blue-800 px-6 py-3 rounded-full font-bold hover:bg-yellow-300 transition flex items-center justify-center gap-2">
+                    <i class="fas fa-check-circle"></i> Report Found Item
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="p-6 bg-blue-50 rounded-xl">
+                    <div class="text-blue-600 text-4xl mb-2">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-blue-800 mb-2"><span id="itemsFoundCount">1,240</span>+</h3>
+                    <p class="text-gray-600">Items Found</p>
+                </div>
+                <div class="p-6 bg-blue-50 rounded-xl">
+                    <div class="text-blue-600 text-4xl mb-2">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-blue-800 mb-2"><span id="itemsReturnedCount">980</span>+</h3>
+                    <p class="text-gray-600">Items Returned</p>
+                </div>
+                <div class="p-6 bg-blue-50 rounded-xl">
+                    <div class="text-blue-600 text-4xl mb-2">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-blue-800 mb-2"><span id="activeUsersCount">3,500</span>+</h3>
+                    <p class="text-gray-600">Active Users</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lost Item Form -->
+    <section id="lost" class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-blue-600 text-white p-6">
+                    <h2 class="text-2xl font-bold flex items-center gap-2">
+                        <i class="fas fa-question-circle"></i> Report a Lost Item
+                    </h2>
+                    <p class="opacity-90">Fill out the form below to report your lost item. Our system will automatically match it with found items.</p>
+                </div>
+                <form id="lostItemForm" class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="lostItemName" class="block text-gray-700 font-medium mb-2">Item Name*</label>
+                            <input type="text" id="lostItemName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                        <div>
+                            <label for="lostCategory" class="block text-gray-700 font-medium mb-2">Category*</label>
+                            <select id="lostCategory" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Select a category</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="accessories">Accessories</option>
+                                <option value="books">Books & Notes</option>
+                                <option value="id-cards">ID Cards</option>
+                                <option value="keys">Keys</option>
+                                <option value="bags">Bags & Wallets</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="lostDescription" class="block text-gray-700 font-medium mb-2">Description*</label>
+                            <textarea id="lostDescription" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                        </div>
+                        <div>
+                            <label for="lostLocation" class="block text-gray-700 font-medium mb-2">Location Lost*</label>
+                            <select id="lostLocation" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Select location</option>
+                                <option value="library">Library</option>
+                                <option value="cafeteria">Cafeteria</option>
+                                <option value="classroom-a">Classroom A</option>
+                                <option value="classroom-b">Classroom B</option>
+                                <option value="sports-complex">Sports Complex</option>
+                                <option value="parking-lot">Parking Lot</option>
+                                <option value="dormitory">Dormitory</option>
+                                <option value="other">Other Area</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="lostDate" class="block text-gray-700 font-medium mb-2">Date Lost*</label>
+                            <input type="date" id="lostDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="lostImage" class="block text-gray-700 font-medium mb-2">Upload Image (Optional)</label>
+                            <div class="flex items-center gap-4">
+                                <label class="cursor-pointer bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition">
+                                    <i class="fas fa-upload mr-2"></i> Choose File
+                                    <input type="file" id="lostImage" class="hidden" accept="image/*">
+                                </label>
+                                <span id="lostFileName" class="text-gray-500">No file chosen</span>
+                            </div>
+                            <img id="lostImagePreview" class="image-preview mt-4 rounded-lg border border-gray-200">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="lostContact" class="block text-gray-700 font-medium mb-2">Contact Email*</label>
+                            <input type="email" id="lostContact" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i> Submit Lost Item Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Found Item Form -->
+    <section id="found" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden border-2 border-blue-200">
+                <div class="bg-green-600 text-white p-6">
+                    <h2 class="text-2xl font-bold flex items-center gap-2">
+                        <i class="fas fa-check-circle"></i> Report a Found Item
+                    </h2>
+                    <p class="opacity-90">Found something? Help reunite it with its owner by filling out this form.</p>
+                </div>
+                <form id="foundItemForm" class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="foundItemName" class="block text-gray-700 font-medium mb-2">Item Name*</label>
+                            <input type="text" id="foundItemName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                        <div>
+                            <label for="foundCategory" class="block text-gray-700 font-medium mb-2">Category*</label>
+                            <select id="foundCategory" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Select a category</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="accessories">Accessories</option>
+                                <option value="books">Books & Notes</option>
+                                <option value="id-cards">ID Cards</option>
+                                <option value="keys">Keys</option>
+                                <option value="bags">Bags & Wallets</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="foundDescription" class="block text-gray-700 font-medium mb-2">Description*</label>
+                            <textarea id="foundDescription" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                        </div>
+                        <div>
+                            <label for="foundLocation" class="block text-gray-700 font-medium mb-2">Location Found*</label>
+                            <select id="foundLocation" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Select location</option>
+                                <option value="library">Library</option>
+                                <option value="cafeteria">Cafeteria</option>
+                                <option value="classroom-a">Classroom A</option>
+                                <option value="classroom-b">Classroom B</option>
+                                <option value="sports-complex">Sports Complex</option>
+                                <option value="parking-lot">Parking Lot</option>
+                                <option value="dormitory">Dormitory</option>
+                                <option value="other">Other Area</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="foundDate" class="block text-gray-700 font-medium mb-2">Date Found*</label>
+                            <input type="date" id="foundDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="foundImage" class="block text-gray-700 font-medium mb-2">Upload Image (Recommended)</label>
+                            <div class="flex items-center gap-4">
+                                <label class="cursor-pointer bg-green-50 text-green-600 px-4 py-2 rounded-lg hover:bg-green-100 transition">
+                                    <i class="fas fa-upload mr-2"></i> Choose File
+                                    <input type="file" id="foundImage" class="hidden" accept="image/*">
+                                </label>
+                                <span id="foundFileName" class="text-gray-500">No file chosen</span>
+                            </div>
+                            <img id="foundImagePreview" class="image-preview mt-4 rounded-lg border border-gray-200">
+                        </div>
+                        <div class="md:col-span-2">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <p class="text-blue-800 flex items-start gap-2">
+                                    <i class="fas fa-info-circle mt-1"></i> 
+                                    <span>Your contact information will not be publicly displayed. The system will use internal messaging to connect you with potential owners.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <button type="submit" class="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-green-700 transition flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i> Submit Found Item Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Browse Items Section -->
+    <section id="browse" class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8 text-blue-800">Browse Lost & Found Items</h2>
+            
+            <!-- Filter Controls -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label for="filterType" class="block text-gray-700 font-medium mb-2">Item Type</label>
+                        <select id="filterType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="all">All Items</option>
+                            <option value="lost">Lost Items</option>
+                            <option value="found">Found Items</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filterCategory" class="block text-gray-700 font-medium mb-2">Category</label>
+                        <select id="filterCategory" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="all">All Categories</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="books">Books & Notes</option>
+                            <option value="id-cards">ID Cards</option>
+                            <option value="keys">Keys</option>
+                            <option value="bags">Bags & Wallets</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filterLocation" class="block text-gray-700 font-medium mb-2">Location</label>
+                        <select id="filterLocation" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="all">All Locations</option>
+                            <option value="library">Library</option>
+                            <option value="cafeteria">Cafeteria</option>
+                            <option value="classroom-a">Classroom A</option>
+                            <option value="classroom-b">Classroom B</option>
+                            <option value="sports-complex">Sports Complex</option>
+                            <option value="parking-lot">Parking Lot</option>
+                            <option value="dormitory">Dormitory</option>
+                            <option value="other">Other Area</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filterDate" class="block text-gray-700 font-medium mb-2">Date Range</label>
+                        <select id="filterDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="all">All Dates</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <input type="text" id="searchItems" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Search items...">
+                    </div>
+                    <button id="applyFilters" class="ml-4 bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition">
+                        Apply Filters
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Matching Notification -->
+            <div id="matchingNotification" class="hidden bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-r-lg">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-lightbulb text-yellow-400 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-lg font-medium text-yellow-800">Potential Matches Found!</h3>
+                        <p class="text-yellow-700">We found <span id="matchCount" class="font-bold">3</span> items that might match what you're looking for.</p>
+                        <button id="viewMatchesBtn" class="mt-2 text-yellow-700 underline hover:text-yellow-900">View matches</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Items Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Sample Item 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Lost iPhone" class="w-full h-48 object-cover">
+                        <div class="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            LOST
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">iPhone 13 Pro</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Electronics</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Black iPhone 13 Pro with blue silicone case. Lost near the cafeteria yesterday.</p>
+                        <div class="flex items-center text-sm text-gray-500 mb-4">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            <span>Cafeteria</span>
+                            <span class="mx-2">•</span>
+                            <i class="far fa-calendar-alt mr-1"></i>
+                            <span>2 days ago</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <button class="text-blue-600 font-medium hover:text-blue-800 transition flex items-center">
+                                <i class="fas fa-envelope mr-1"></i> Contact Owner
+                            </button>
+                            <button class="text-gray-400 hover:text-gray-600 transition">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sample Item 2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300 match-highlight">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Found backpack" class="w-full h-48 object-cover">
+                        <div class="absolute top-2 left-2 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            FOUND
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">Black Backpack</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Bags</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Found a black Jansport backpack in the library. Contains notebooks and a calculator.</p>
+                        <div class="flex items-center text-sm text-gray-500 mb-4">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            <span>Library</span>
+                            <span class="mx-2">•</span>
+                            <i class="far fa-calendar-alt mr-1"></i>
+                            <span>Today</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <button class="text-green-600 font-medium hover:text-green-800 transition flex items-center">
+                                <i class="fas fa-envelope mr-1"></i> Contact Finder
+                            </button>
+                            <button class="text-gray-400 hover:text-gray-600 transition">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sample Item 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Found keys" class="w-full h-48 object-cover">
+                        <div class="absolute top-2 left-2 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            FOUND
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">Set of Keys</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Keys</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Found a set of keys with a blue keychain in Classroom B. Has a car key and several others.</p>
+                        <div class="flex items-center text-sm text-gray-500 mb-4">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            <span>Classroom B</span>
+                            <span class="mx-2">•</span>
+                            <i class="far fa-calendar-alt mr-1"></i>
+                            <span>3 days ago</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <button class="text-green-600 font-medium hover:text-green-800 transition flex items-center">
+                                <i class="fas fa-envelope mr-1"></i> Contact Finder
+                            </button>
+                            <button class="text-gray-400 hover:text-gray-600 transition">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Load More Button -->
+            <div class="mt-10 text-center">
+                <button class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition inline-flex items-center">
+                    <i class="fas fa-sync-alt mr-2"></i> Load More Items
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories Section -->
+    <section class="py-12 bg-blue-600 text-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">Success Stories</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white bg-opacity-10 p-6 rounded-xl border border-white border-opacity-20">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-400 flex items-center justify-center text-xl font-bold mr-4">JD</div>
+                        <div>
+                            <h4 class="font-bold">John Doe</h4>
+                            <p class="text-blue-100 text-sm">Student, Computer Science</p>
+                        </div>
+                    </div>
+                    <p class="mb-4">"I lost my wallet with all my IDs and credit cards. Thanks to this portal, a kind stranger found it and returned everything intact!"</p>
+                    <div class="flex items-center text-blue-200 text-sm">
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="bg-white bg-opacity-10 p-6 rounded-xl border border-white border-opacity-20">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-400 flex items-center justify-center text-xl font-bold mr-4">AS</div>
+                        <div>
+                            <h4 class="font-bold">Alice Smith</h4>
+                            <p class="text-blue-100 text-sm">Faculty, Biology</p>
+                        </div>
+                    </div>
+                    <p class="mb-4">"My research notebook was returned within hours of posting it as lost. This system is a lifesaver for forgetful professors like me!"</p>
+                    <div class="flex items-center text-blue-200 text-sm">
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="bg-white bg-opacity-10 p-6 rounded-xl border border-white border-opacity-20">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-400 flex items-center justify-center text-xl font-bold mr-4">MJ</div>
+                        <div>
+                            <h4 class="font-bold">Michael Johnson</h4>
+                            <p class="text-blue-100 text-sm">Visitor, Career Fair</p>
+                        </div>
+                    </div>
+                    <p class="mb-4">"As a visitor, I was amazed by how quickly the system matched my lost tablet with the one found at the career fair. Great initiative!"</p>
+                    <div class="flex items-center text-blue-200 text-sm">
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Messaging Modal -->
+    <div id="messageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="bg-blue-600 text-white p-4 flex justify-between items-center">
+                <h3 class="text-xl font-bold flex items-center gap-2">
+                    <i class="fas fa-comments"></i> Message About: Black Backpack
+                </h3>
+                <button id="closeMessageModal" class="text-white hover:text-blue-200 text-2xl">&times;</button>
+            </div>
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-4 bg-gray-50">
+                <!-- Received Message -->
+                <div class="flex mb-4">
+                    <div class="flex-shrink-0 mr-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+                            <i class="fas fa-user text-gray-600"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bg-gray-200 p-3 rounded-lg message-bubble received">
+                            <p>Hi! I found your backpack in the library. Can you describe what was inside to verify it's yours?</p>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">Sarah, 10:24 AM</div>
+                    </div>
+                </div>
+                
+                <!-- Sent Message -->
+                <div class="flex mb-4 justify-end">
+                    <div class="max-w-xs">
+                        <div class="bg-blue-500 text-white p-3 rounded-lg message-bubble sent">
+                            <p>Yes! It has a blue notebook with physics notes, a TI-84 calculator, and my student ID in the front pocket.</p>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1 text-right">You, 10:26 AM</div>
+                    </div>
+                    <div class="flex-shrink-0 ml-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                            JS
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Received Message -->
+                <div class="flex mb-4">
+                    <div class="flex-shrink-0 mr-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+                            <i class="fas fa-user text-gray-600"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bg-gray-200 p-3 rounded-lg message-bubble received">
+                            <p>That matches! I can meet you at the library front desk tomorrow at 2pm to return it.</p>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">Sarah, 10:28 AM</div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center">
+                    <input type="text" placeholder="Type your message..." class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700 transition">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl w-full max-w-md overflow-hidden">
+            <div class="bg-blue-600 text-white p-6">
+                <h3 class="text-2xl font-bold flex items-center gap-2">
+                    <i class="fas fa-sign-in-alt"></i> Login to Your Account
+                </h3>
+            </div>
+            <form id="loginForm" class="p-6">
+                <div class="mb-4">
+                    <label for="loginEmail" class="block text-gray-700 font-medium mb-2">Email*</label>
+                    <input type="email" id="loginEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div class="mb-6">
+                    <label for="loginPassword" class="block text-gray-700 font-medium mb-2">Password*</label>
+                    <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="rememberMe" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="rememberMe" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                    </div>
+                    <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition">
+                    Login
+                </button>
+                <div class="mt-4 text-center text-sm text-gray-600">
+                    Don't have an account? <button id="switchToRegister" class="text-blue-600 hover:underline">Register here</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl w-full max-w-md overflow-hidden">
+            <div class="bg-blue-600 text-white p-6">
+                <h3 class="text-2xl font-bold flex items-center gap-2">
+                    <i class="fas fa-user-plus"></i> Create Your Account
+                </h3>
+            </div>
+            <form id="registerForm" class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="registerFirstName" class="block text-gray-700 font-medium mb-2">First Name*</label>
+                        <input type="text" id="registerFirstName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
+                    <div>
+                        <label for="registerLastName" class="block text-gray-700 font-medium mb-2">Last Name*</label>
+                        <input type="text" id="registerLastName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="registerEmail" class="block text-gray-700 font-medium mb-2">Email*</label>
+                    <input type="email" id="registerEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="registerPassword" class="block text-gray-700 font-medium mb-2">Password*</label>
+                    <input type="password" id="registerPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div class="mb-6">
+                    <label for="registerConfirmPassword" class="block text-gray-700 font-medium mb-2">Confirm Password*</label>
+                    <input type="password" id="registerConfirmPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div class="mb-6">
+                    <label for="registerRole" class="block text-gray-700 font-medium mb-2">I am a*</label>
+                    <select id="registerRole" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        <option value="">Select your role</option>
+                        <option value="student">Student</option>
+                        <option value="faculty">Faculty/Staff</option>
+                        <option value="visitor">Visitor</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition">
+                    Register
+                </button>
+                <div class="mt-4 text-center text-sm text-gray-600">
+                    Already have an account? <button id="switchToLogin" class="text-blue-600 hover:underline">Login here</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <i class="fas fa-search"></i> CampusLost<span class="text-yellow-300">&</span>Found
+                    </h3>
+                    <p class="text-gray-400">Helping reunite lost items with their owners since 2023. Our community-driven platform makes campus life easier.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="#lost" class="text-gray-400 hover:text-white transition">Report Lost</a></li>
+                        <li><a href="#found" class="text-gray-400 hover:text-white transition">Report Found</a></li>
+                        <li><a href="#browse" class="text-gray-400 hover:text-white transition">Browse Items</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Safety Tips</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Campus Policies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Connect With Us</h4>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-400 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-600 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400">
+                        <i class="fas fa-envelope mr-2"></i> help@campuslostfound.edu
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 CampusLost&Found. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const closeMessageModal = document.getElementById('closeMessageModal');
+        const messageModal = document.getElementById('messageModal');
+        const switchToRegister = document.getElementById('switchToRegister');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const lostImage = document.getElementById('lostImage');
+        const lostImagePreview = document.getElementById('lostImagePreview');
+        const lostFileName = document.getElementById('lostFileName');
+        const foundImage = document.getElementById('foundImage');
+        const foundImagePreview = document.getElementById('foundImagePreview');
+        const foundFileName = document.getElementById('foundFileName');
+        const matchingNotification = document.getElementById('matchingNotification');
+        const viewMatchesBtn = document.getElementById('viewMatchesBtn');
+        const userMenuBtn = document.getElementById('userMenuBtn');
+
+        // Mock user data
+        let isLoggedIn = false;
+        let mockItems = [
+            { id: 1, type: 'lost', name: 'iPhone 13 Pro', category: 'electronics', description: 'Black iPhone 13 Pro with blue silicone case. Lost near the cafeteria yesterday.', location: 'cafeteria', date: '2 days ago', image: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60' },
+            { id: 2, type: 'found', name: 'Black Backpack', category: 'bags', description: 'Found a black Jansport backpack in the library. Contains notebooks and a calculator.', location: 'library', date: 'Today', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60' },
+            { id: 3, type: 'found', name: 'Set of Keys', category: 'keys', description: 'Found a set of keys with a blue keychain in Classroom B. Has a car key and several others.', location: 'classroom-b', date: '3 days ago', image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60' }
+        ];
+
+        // Event Listeners
+        loginBtn.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+            registerModal.classList.add('hidden');
+        });
+
+        registerBtn.addEventListener('click', () => {
+            registerModal.classList.remove('hidden');
+            loginModal.classList.add('hidden');
+        });
+
+        switchToRegister.addEventListener('click', () => {
+            registerModal.classList.remove('hidden');
+            loginModal.classList.add('hidden');
+        });
+
+        switchToLogin.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+            registerModal.classList.add('hidden');
+        });
+
+        [loginModal, registerModal, messageModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+        });
+
+        closeMessageModal.addEventListener('click', () => {
+            messageModal.classList.add('hidden');
+        });
+
+        // Image preview for lost item form
+        lostImage.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    lostImagePreview.src = e.target.result;
+                    lostImagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+                lostFileName.textContent = file.name;
+            } else {
+                lostImagePreview.style.display = 'none';
+                lostFileName.textContent = 'No file chosen';
+            }
+        });
+
+        // Image preview for found item form
+        foundImage.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    foundImagePreview.src = e.target.result;
+                    foundImagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+                foundFileName.textContent = file.name;
+            } else {
+                foundImagePreview.style.display = 'none';
+                foundFileName.textContent = 'No file chosen';
+            }
+        });
+
+        // Form submissions
+        document.getElementById('lostItemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (isLoggedIn) {
+                alert('Lost item report submitted successfully! Our system will notify you of any matches.');
+                this.reset();
+                lostImagePreview.style.display = 'none';
+                lostFileName.textContent = 'No file chosen';
+                
+                // Show matching notification after a delay
+                setTimeout(() => {
+                    matchingNotification.classList.remove('hidden');
+                    document.getElementById('matchCount').textContent = '2';
+                    
+                    // Scroll to notification
+                    matchingNotification.scrollIntoView({ behavior: 'smooth' });
+                }, 1500);
+            } else {
+                alert('Please login or register to submit a lost item report.');
+                loginModal.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('foundItemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (isLoggedIn) {
+                alert('Found item report submitted successfully! Thank you for helping reunite items with their owners.');
+                this.reset();
+                foundImagePreview.style.display = 'none';
+                foundFileName.textContent = 'No file chosen';
+            } else {
+                alert('Please login or register to submit a found item report.');
+                loginModal.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simple validation
+            if (email && password) {
+                // Mock login
+                isLoggedIn = true;
+                loginModal.classList.add('hidden');
+                loginBtn.classList.add('hidden');
+                registerBtn.classList.add('hidden');
+                userMenuBtn.classList.remove('hidden');
+                userMenuBtn.querySelector('span').textContent = email.charAt(0).toUpperCase() + email.split('@')[0].charAt(1).toUpperCase();
+                
+                alert('Login successful! Welcome back.');
+            } else {
+                alert('Please enter both email and password.');
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const firstName = document.getElementById('registerFirstName').value;
+            const lastName = document.getElementById('registerLastName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const role = document.getElementById('registerRole').value;
+            
+            // Simple validation
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return;
+            }
+            
+            if (firstName && lastName && email && password && role) {
+                // Mock registration
+                isLoggedIn = true;
+                registerModal.classList.add('hidden');
+                loginBtn.classList.add('hidden');
+                registerBtn.classList.add('hidden');
+                userMenuBtn.classList.remove('hidden');
+                userMenuBtn.querySelector('span').textContent = firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase();
+                
+                alert('Registration successful! Welcome to CampusLost&Found.');
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+
+        // View matches button
+        viewMatchesBtn.addEventListener('click', () => {
+            matchingNotification.classList.add('hidden');
+            // Scroll to matches (in this case, the first found item which has the match-highlight class)
+            document.querySelector('.match-highlight').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Contact buttons - open messaging modal
+        document.querySelectorAll('[class*="Contact"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (isLoggedIn) {
+                    messageModal.classList.remove('hidden');
+                } else {
+                    alert('Please login to contact about this item.');
+                    loginModal.classList.remove('hidden');
+                }
+            });
+        });
+
+        // Apply filters button
+        document.getElementById('applyFilters').addEventListener('click', () => {
+            const type = document.getElementById('filterType').value;
+            const category = document.getElementById('filterCategory').value;
+            const location = document.getElementById('filterLocation').value;
+            const date = document.getElementById('filterDate').value;
+            const search = document.getElementById('searchItems').value.toLowerCase();
+            
+            // In a real app, this would filter actual data from a database
+            // Here we're just showing a message about what would happen
+            let filterMessage = 'Applying filters: ';
+            if (type !== 'all') filterMessage += `Type: ${type}, `;
+            if (category !== 'all') filterMessage += `Category: ${category}, `;
+            if (location !== 'all') filterMessage += `Location: ${location}, `;
+            if (date !== 'all') filterMessage += `Date: ${date}, `;
+            if (search) filterMessage += `Search: "${search}"`;
+            
+            console.log(filterMessage);
+            alert('In a real application, this would filter the items based on your selections. For this demo, all items remain visible.');
+        });
+
+        // Animate stats counting up
+        function animateValue(id, start, end, duration) {
+            let startTimestamp = null;
+            const element = document.getElementById(id);
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                element.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Start animations when stats come into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateValue('itemsFoundCount', 0, 1240, 2000);
+                    animateValue('itemsReturnedCount', 0, 980, 2000);
+                    animateValue('activeUsersCount', 0, 3500, 2000);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(document.querySelector('#itemsFoundCount').parentElement.parentElement);
+    </script>
+</body>
+</html>
