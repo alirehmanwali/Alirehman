@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella Vista - Fine Dining Restaurant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./styles/globals.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <h4 class="text-primary">Bella Vista</h4>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-foreground hover:text-primary transition-colors">Home</a>
+                    <a href="#about" class="text-foreground hover:text-primary transition-colors">About</a>
+                    <a href="#menu" class="text-foreground hover:text-primary transition-colors">Menu</a>
+                    <a href="#contact" class="text-foreground hover:text-primary transition-colors">Contact</a>
+                </div>
+                
+                <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+                    Reserve Table
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0">
+                <img
+                    src="https://images.unsplash.com/photo-1743793055911-52e19beba5d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwcmVzdGF1cmFudCUyMGludGVyaW9yJTIwZGluaW5nfGVufDF8fHx8MTc1NjA3MjE4M3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                    alt="Elegant restaurant interior"
+                    class="w-full h-full object-cover"
+                />
+                <div class="absolute inset-0 bg-black/40"></div>
+            </div>
+            
+            <div class="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
+                <h1 class="mb-6">Bella Vista</h1>
+                <p class="mb-8 max-w-2xl mx-auto opacity-90">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque quibusdam possimus voluptas sed ipsum quis odio pariatur. Atque maiores sunt et, modi, eius error distinctio minus repudiandae sed rem fuga.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-8 bg-white text-black hover:bg-gray-100">
+                        Reserve a Table
+                    </button>
+                    <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border h-11 px-8 border-white text-white hover:bg-white hover:text-black">
+                        View Menu
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="mb-6">Welcome to Bella Vista</h2>
+                        <p class="mb-6 text-muted-foreground">
+                            At Bella Vista, we believe food should feel like home. Our story began with a simple love for good food and even better company. Inspired by cozy Italian streets and the art of slow dining, we wanted to create a place where people could pause, relax, and enjoy flavors that make them smile.
+                        </p>
+                        <p class="mb-6 text-muted-foreground">
+                            Every dish on our menu is made with care fresh ingredients, bold flavors, and a little bit of heart in every bite. Whether it’s sharing a plate of pasta with friends, enjoying a quiet evening by the window, or raising a glass to celebrate life’s little wins, Bella Vista is here to make those moments special.
+                        </p>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="mb-2 text-primary">30+ Years</h4>
+                                <p class="text-muted-foreground">Of culinary excellence</p>
+                            </div>
+                            <div>
+                                <h4 class="mb-2 text-primary">Award Winning</h4>
+                                <p class="text-muted-foreground">Michelin starred cuisine</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="aspect-square rounded-lg overflow-hidden">
+                            <img
+                                src="https://images.unsplash.com/photo-1750943024048-a4c9912b1425?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnb3VybWV0JTIwZm9vZCUyMHBsYXRpbmclMjBmaW5lJTIwZGluaW5nfGVufDF8fHx8MTc1NjA4NTgxMXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                                alt="Gourmet food plating"
+                                class="w-full h-full object-cover"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Menu Section -->
+        <section id="menu" class="py-20 px-6 bg-muted/30">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="mb-4">Signature Dishes</h2>
+                    <p class="text-muted-foreground max-w-2xl mx-auto">
+                        Discover our most beloved creations, each crafted with passion and the finest ingredients
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Menu Item 1 -->
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="aspect-square overflow-hidden">
+                            <img
+                                src="https://images.unsplash.com/photo-1712746784067-e9e1bd86c043?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwYXN0YSUyMGRpc2glMjByZXN0YXVyYW50JTIwZm9vZHxlbnwxfHx8fDE3NTYxMDgyNjZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                                alt="Truffle Pasta Carbonara"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            />
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3>Truffle Pasta Carbonara</h3>
+                                <span class="text-primary">$32</span>
+                            </div>
+                            <p class="text-muted-foreground">Fresh house-made pasta with black truffle, pancetta, and pecorino romano</p>
+                        </div>
+                    </div>
+
+                    <!-- Menu Item 2 -->
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="aspect-square overflow-hidden">
+                            <img
+                                src="https://images.unsplash.com/photo-1714692571386-0f26dec1bab5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmlsbGVkJTIwc3RlYWslMjBmaW5lJTIwZGluaW5nfGVufDF8fHx8MTc1NjEwODI2Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                                alt="Wagyu Beef Tenderloin"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            />
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3>Wagyu Beef Tenderloin</h3>
+                                <span class="text-primary">$68</span>
+                            </div>
+                            <p class="text-muted-foreground">Premium wagyu beef with roasted vegetables and red wine reduction</p>
+                        </div>
+                    </div>
+
+                    <!-- Menu Item 3 -->
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="aspect-square overflow-hidden">
+                            <img
+                                src="https://images.unsplash.com/photo-1750943024048-a4c9912b1425?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnb3VybWV0JTIwZm9vZCUyMHBsYXRpbmclMjBmaW5lJTIwZGluaW5nfGVufDF8fHx8MTc1NjA4NTgxMXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                                alt="Mediterranean Sea Bass"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            />
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3>Mediterranean Sea Bass</h3>
+                                <span class="text-primary">$42</span>
+                            </div>
+                            <p class="text-muted-foreground">Pan-seared sea bass with lemon herb crust and salmoriglio sauce</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="mb-4">Visit Us</h2>
+                    <p class="text-muted-foreground">
+                        Experience exceptional dining in the heart of the city
+                    </p>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <div class="space-y-6">
+                        <!-- Location Card -->
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div class="p-6">
+                                <div class="flex items-start gap-4">
+                                    <i data-lucide="map-pin" class="w-6 h-6 text-primary mt-1"></i>
+                                    <div>
+                                        <h4 class="mb-2">Location</h4>
+                                        <p class="text-muted-foreground">
+                                            123 Culinary Avenue<br />
+                                            Downtown District<br />
+                                            New York, NY 10001
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Hours Card -->
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div class="p-6">
+                                <div class="flex items-start gap-4">
+                                    <i data-lucide="clock" class="w-6 h-6 text-primary mt-1"></i>
+                                    <div>
+                                        <h4 class="mb-2">Hours</h4>
+                                        <div class="text-muted-foreground space-y-1">
+                                            <p>Monday - Thursday: 5:30pm - 10:00pm</p>
+                                            <p>Friday - Saturday: 5:30pm - 11:00pm</p>
+                                            <p>Sunday: 5:00pm - 9:30pm</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Phone Card -->
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div class="p-6">
+                                <div class="flex items-start gap-4">
+                                    <i data-lucide="phone" class="w-6 h-6 text-primary mt-1"></i>
+                                    <div>
+                                        <h4 class="mb-2">Reservations</h4>
+                                        <p class="text-muted-foreground">+1 (555) 123-4567</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Email Card -->
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div class="p-6">
+                                <div class="flex items-start gap-4">
+                                    <i data-lucide="mail" class="w-6 h-6 text-primary mt-1"></i>
+                                    <div>
+                                        <h4 class="mb-2">Email</h4>
+                                        <p class="text-muted-foreground">reservations@bellavista.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-muted/30 rounded-lg p-8 text-center">
+                        <h3 class="mb-4">Make a Reservation</h3>
+                        <p class="text-muted-foreground mb-6">
+                            Reserve your table for an unforgettable dining experience. We recommend booking in advance, especially for weekend evenings.
+                        </p>
+                        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 w-full sm:w-auto">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-primary-foreground py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="mb-4">Bella Vista</h3>
+                    <p class="opacity-90 mb-4">
+                        Fine dining experience in the heart of the city. Authentic Italian cuisine with a modern twist.
+                    </p>
+                    <div class="flex space-x-4">
+                        <i data-lucide="instagram" class="w-5 h-5 opacity-80 hover:opacity-100 cursor-pointer transition-opacity"></i>
+                        <i data-lucide="facebook" class="w-5 h-5 opacity-80 hover:opacity-100 cursor-pointer transition-opacity"></i>
+                        <i data-lucide="twitter" class="w-5 h-5 opacity-80 hover:opacity-100 cursor-pointer transition-opacity"></i>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="mb-4">Quick Links</h4>
+                    <div class="space-y-2 opacity-90">
+                        <p class="hover:opacity-100 cursor-pointer transition-opacity">About Us</p>
+                        <p class="hover:opacity-100 cursor-pointer transition-opacity">Menu</p>
+                        <p class="hover:opacity-100 cursor-pointer transition-opacity">Reservations</p>
+                        <p class="hover:opacity-100 cursor-pointer transition-opacity">Private Events</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="mb-4">Contact Info</h4>
+                    <div class="space-y-2 opacity-90">
+                        <p>123 Culinary Avenue</p>
+                        <p>New York, NY 10001</p>
+                        <p>+1 (555) 123-4567</p>
+                        <p>reservations@bellavista.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-primary-foreground/20 mt-8 pt-8 text-center opacity-80">
+                <p>&copy; 2024 Bella Vista Restaurant. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Simple button click handlers
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.textContent.includes('Reserve') || this.textContent.includes('Book')) {
+                    alert('Reservation system would be integrated here!');
+                } else if (this.textContent.includes('View Menu')) {
+                    document.querySelector('#menu').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
