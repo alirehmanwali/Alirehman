@@ -159,7 +159,19 @@ A simple platform to manage projects, tasks, and team collaboration.
 </footer>
 
 
-<script src="script.js"></script>
+<script>
+    const form = document.querySelector("form");
+
+form.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+alert("Message sent successfully!");
+
+form.reset();
+
+});
+</script>
 
 </body>
 </html>
