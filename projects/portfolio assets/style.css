@@ -1,0 +1,175 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#0f172a;
+color:white;
+}
+
+/* NAVBAR */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 10%;
+background:#020617;
+}
+
+.navbar ul{
+display:flex;
+list-style:none;
+gap:20px;
+}
+
+.navbar a{
+text-decoration:none;
+color:white;
+}
+
+.nav-btn{
+background:#38bdf8;
+border:none;
+padding:8px 15px;
+cursor:pointer;
+border-radius:5px;
+}
+
+/* HERO */
+
+.hero{
+text-align:center;
+padding:120px 20px;
+}
+
+.hero h1{
+font-size:40px;
+margin-bottom:15px;
+}
+
+.hero p{
+color:#cbd5f5;
+margin-bottom:25px;
+}
+
+.hero-buttons button{
+padding:10px 20px;
+margin:5px;
+border:none;
+cursor:pointer;
+border-radius:5px;
+}
+
+.primary{
+background:#38bdf8;
+}
+
+.secondary{
+background:transparent;
+border:1px solid #38bdf8;
+color:white;
+}
+
+/* FEATURES */
+
+.features{
+padding:80px 10%;
+text-align:center;
+}
+
+.feature-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+margin-top:40px;
+}
+
+.feature-card{
+background:#1e293b;
+padding:25px;
+border-radius:10px;
+transition:0.3s;
+}
+
+.feature-card:hover{
+transform:translateY(-5px);
+}
+
+/* PRICING */
+
+.pricing{
+padding:80px 10%;
+text-align:center;
+}
+
+.pricing-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+margin-top:40px;
+}
+
+.price-card{
+background:#1e293b;
+padding:30px;
+border-radius:10px;
+}
+
+.price-card h4{
+margin:15px 0;
+}
+
+.price-card button{
+background:#38bdf8;
+border:none;
+padding:10px 20px;
+border-radius:5px;
+cursor:pointer;
+}
+
+.popular{
+border:2px solid #38bdf8;
+}
+
+/* CONTACT */
+
+.contact{
+padding:80px 10%;
+text-align:center;
+}
+
+.contact form{
+max-width:500px;
+margin:auto;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.contact input,
+.contact textarea{
+padding:10px;
+border:none;
+border-radius:5px;
+}
+
+.contact button{
+background:#38bdf8;
+border:none;
+padding:10px;
+cursor:pointer;
+border-radius:5px;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:30px;
+background:#020617;
+margin-top:40px;
+}
